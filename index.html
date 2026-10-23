@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Individual Development Plan</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+/* === START: IDP STYLES === */
+:root{--navy:#0b2038;--blue:#1f6fb2;--green:#2e6b4a;--red:#ae1325;--purple:#5b4189;--line:#c9d0d8;--mute:#6b7683;--bg:#e9edf1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:#111;font-size:12px}
+.toolbar{position:sticky;top:0;z-index:20;background:var(--navy);display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px;align-items:center}
+.toolbar b{color:#fff;margin-right:auto;font-size:14px}
+.toolbar button{background:#fff;color:var(--navy);border:0;border-radius:6px;padding:8px 14px;font-weight:700;cursor:pointer;font-size:12px}
+.toolbar button.pri{background:var(--blue);color:#fff}
+.toolbar button:hover{opacity:.88}
+.page{width:794px;min-height:1123px;margin:18px auto;background:#fff;position:relative;box-shadow:0 2px 12px rgba(0,0,0,.18);padding-bottom:50px}
+.top{background:var(--navy);color:#fff;padding:20px 52px 16px;border-bottom:4px solid var(--blue)}
+.top h1{margin:0;font-size:28px;letter-spacing:.3px}
+.top p{margin:6px 0 0;font-size:12.5px}
+.top.sm{padding:14px 52px;border:0}.top.sm h1{font-size:15px}
+.body{padding:18px 52px 0}
+.bar{background:var(--navy);color:#fff;font-weight:700;font-size:13px;padding:9px 12px;margin:14px 0 10px}
+.bar.green{background:var(--green)}.bar.red{background:var(--red)}.bar.blue{background:var(--blue)}
+.hint{font-style:italic;color:var(--mute);font-size:11px;margin:0 0 5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
+label.f{display:block;font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;margin:6px 0 4px}
+input[type=text],input[type=number],input[type=date],textarea{width:100%;border:1.5px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:7px 8px;border-radius:0;outline:0;color:#111}
+input[type=text],input[type=date],input[type=number]{height:29px}
+input:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(31,111,178,.18)}
+textarea{resize:none;display:block}
+.stack input{margin-bottom:8px}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.scale div{background:#f1f3f5;border:1.5px solid var(--line);padding:9px;min-height:94px}
+.scale b{display:block;margin-bottom:6px}.scale span{color:var(--mute)}
+ol{margin:6px 0 0;padding-left:18px;line-height:2}
+.area-h{color:#fff;font-weight:700;font-size:15px;padding:9px 12px;margin-top:20px}
+.q{font-weight:700;margin:2px 0 6px}
+.row{display:grid;grid-template-columns:1fr 112px;gap:20px}
+.rows input{margin-bottom:8px}
+.sum{display:grid;grid-template-columns:20px 1fr 112px 1fr;gap:0 12px;align-items:center;margin-bottom:6px}
+.sum i{width:11px;height:24px;display:block}
+.sumh{background:var(--navy);color:#fff;padding:10px 12px;display:grid;grid-template-columns:230px 112px 1fr;gap:12px;font-weight:700;font-size:11px;margin-top:10px}
+.sumh span:first-child{font-size:13px}
+.chk{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.chk label{display:flex;gap:7px;align-items:center;font-size:12.5px}
+.chk input[type=checkbox]{width:17px;height:17px}
+.chk input[type=text]{width:190px}
+.foot{position:absolute;left:52px;right:52px;bottom:18px;display:flex;justify-content:space-between;color:var(--mute);font-size:10.5px}
+@media print{.toolbar{display:none}body{background:#fff}.page{margin:0;box-shadow:none;page-break-after:always}}
+body.capturing .toolbar{display:none}
+/* === END: IDP STYLES === */
+</style>
+</head>
+<body>
+
+<!-- === START: TOOLBAR === -->
+<div class="toolbar">
+  <b>Individual Development Plan</b>
+  <button class="pri" onclick="exportPDF()">Export PDF</button>
+  <button onclick="document.getElementById('imp').click()">Import PDF / JSON</button>
+  <button onclick="exportJSON()">Save JSON</button>
+  <button onclick="window.print()">Print</button>
+  <button onclick="clearAll()">Clear</button>
+  <input id="imp" type="file" accept=".pdf,.json" hidden onchange="importFile(this.files[0]);this.value=''">
+</div>
+<!-- === END: TOOLBAR === -->
+
+<!-- === START: PAGE 1 === -->
+<section class="page">
+  <div class="top"><h1>INDIVIDUAL DEVELOPMENT PLAN</h1><p>Academy player evaluation template · 5 areas · progress-based scoring</p></div>
+  <div class="body">
+    <div class="bar">PLAYER DETAILS</div>
+    <div class="grid2">
+      <div><label class="f">Player</label><input type="text" data-k="player"></div>
+      <div><label class="f">Date of birth / Age</label><input type="text" data-k="dob"></div>
+      <div><label class="f">Age group / Team</label><input type="text" data-k="team"></div>
+      <div><label class="f">Position(s)</label><input type="text" data-k="pos"></div>
+      <div><label class="f">Preferred foot / Height</label><input type="text" data-k="foot"></div>
+      <div><label class="f">Evaluator</label><input type="text" data-k="evaluator"></div>
+      <div><label class="f">Evaluation date</label><input type="date" data-k="evdate"></div>
+      <div><label class="f">Period evaluated (e.g. season, block)</label><input type="text" data-k="period"></div>
+    </div>
+    <div class="bar">GENERAL DESCRIPTION</div>
+    <p class="hint">Summarise in 3–4 lines: player profile, standout traits and main area to develop.</p>
+    <textarea rows="5" data-k="desc"></textarea>
+    <div class="grid2" style="margin-top:16px">
+      <div class="stack"><div class="bar green" style="margin-top:0">STRENGTHS</div>
+        <input type="text" data-k="str1"><input type="text" data-k="str2"><input type="text" data-k="str3"></div>
+      <div class="stack"><div class="bar red" style="margin-top:0">AREAS TO IMPROVE</div>
+        <input type="text" data-k="imp1"><input type="text" data-k="imp2"><input type="text" data-k="imp3"></div>
+    </div>
+    <div class="bar">SCORING SCALE (% PROGRESS ON EACH OBJECTIVE)</div>
+    <div class="scale">
+      <div><b>0–25 %  Starting</b><span>Not yet shown consistently.</span></div>
+      <div><b>26–50 %  Developing</b><span>Appears at times and needs guidance.</span></div>
+      <div><b>51–75 %  Consolidating</b><span>Does it regularly in matches.</span></div>
+      <div><b>76–100 %  Mastered</b><span>Does it independently and under pressure.</span></div>
+    </div>
+    <p class="hint" style="margin-top:8px">Score progress against their own starting point, not against other players.</p>
+    <div class="bar blue">HOW TO USE THIS TEMPLATE</div>
+    <ol>
+      <li>Define 2–3 concrete objectives per area (more than that dilutes learning).</li>
+      <li>Score progress on each objective from 0 to 100 % and note the related weekly work.</li>
+      <li>Choose ONE focus for the next block and review every 4–6 weeks using video and small-sided games.</li>
+    </ol>
+  </div>
+  <div class="foot"><span>Academy Player Evaluation Template</span><span>Page 1/3</span></div>
+</section>
+<!-- === END: PAGE 1 === -->
+
+<!-- === START: PAGE 2 (AREAS) === -->
+<section class="page">
+  <div class="top sm"><h1>INDIVIDUAL DEVELOPMENT PLAN — EVALUATION BY AREA</h1></div>
+  <div class="body" id="areas2"></div>
+  <div class="foot"><span>Academy Player Evaluation Template</span><span>Page 2/3</span></div>
+</section>
+<!-- === END: PAGE 2 === -->
+
+<!-- === START: PAGE 3 === -->
+<section class="page">
+  <div class="top sm"><h1>INDIVIDUAL DEVELOPMENT PLAN — EVALUATION BY AREA</h1></div>
+  <div class="body">
+    <div id="areas3"></div>
+    <div class="sumh"><span>PROGRESS SUMMARY</span><span>AVG. PROGRESS %</span><span>NOTES</span></div>
+    <div id="summary" style="margin-top:12px"></div>
+    <div class="bar red">FOCUS FOR THE NEXT BLOCK</div>
+    <p class="hint">The objective with the least progress and most impact on his/her game. One focus per block.</p>
+    <textarea rows="3" data-k="focus"></textarea>
+    <div class="bar blue">HOW WE WILL MEASURE IT</div>
+    <div class="chk">
+      <label><input type="checkbox" data-k="m_review">Review every 4–6 weeks</label>
+      <label><input type="checkbox" data-k="m_video">Video clips</label>
+      <label><input type="checkbox" data-k="m_ssg">Small-sided games</label>
+      <label><input type="checkbox" data-k="m_other">Other:</label><input type="text" data-k="m_other_txt">
+    </div>
+  </div>
+  <div class="foot"><span>Academy Player Evaluation Template</span><span>Page 3/3</span></div>
+</section>
+<!-- === END: PAGE 3 === -->
+
+<script>
+/* === START: IDP SCRIPT === */
+const AREAS=[
+ {id:'tech',name:'TECHNICAL',color:'#1f6fb2',desc:'Ball mastery: control, passing, shooting and technique.',q:'Key question: Can he/she execute the basics with quality at game speed?',pg:2},
+ {id:'tact',name:'TACTICAL',color:'#0b2038',desc:'Reading the game: positioning, decisions and understanding of roles.',q:'Key question: Does he/she make the right decision at the right moment?',pg:2},
+ {id:'phys',name:'PHYSICAL',color:'#2e6b4a',desc:'Speed, strength, endurance, coordination and recovery.',q:'Key question: Can his/her body meet the demands of the game?',pg:2},
+ {id:'psy',name:'PSYCHOLOGICAL',color:'#ae1325',desc:'Mindset: confidence, focus, resilience and competitiveness.',q:'Key question: Does he/she dare to try difficult things despite the risk of failing?',pg:3},
+ {id:'soc',name:'SOCIO-AFFECTIVE',color:'#5b4189',desc:'Relating to others: teamwork, communication and belonging.',q:'Key question: Does he/she make those around him/her better?',pg:3}
+];
+const SUM=[['Technical','#1f6fb2','tech'],['Tactical','#0b2038','tact'],['Physical','#2e6b4a','phys'],['Psychological','#ae1325','psy'],['Socio-affective','#5b4189','soc']];
+
+function areaHTML(a){
+  let r='';
+  for(let i=1;i<=3;i++) r+=`<div class="row"><input type="text" data-k="${a.id}_o${i}"><input type="number" min="0" max="100" data-k="${a.id}_p${i}" data-area="${a.id}" placeholder="%"></div>`;
+  return `<div class="area-h" style="background:${a.color}">${a.name}</div>
+  <p class="hint" style="margin-top:7px;margin-bottom:2px">${a.desc}</p>
+  <p class="q" style="color:${a.color}">${a.q}</p>
+  <div class="row"><label class="f">Specific objective</label><label class="f">Progress %</label></div>
+  <div class="rows">${r}</div>
+  <label class="f">Specific work (weekly actions, frequency, resources)</label>
+  <textarea rows="3" data-k="${a.id}_work"></textarea>`;
+}
+document.getElementById('areas2').innerHTML=AREAS.filter(a=>a.pg==2).map(areaHTML).join('');
+document.getElementById('areas3').innerHTML=AREAS.filter(a=>a.pg==3).map(areaHTML).join('');
+document.getElementById('summary').innerHTML=SUM.map(s=>`<div class="sum"><i style="background:${s[1]}"></i><b>${s[0]}</b><input type="number" min="0" max="100" data-k="avg_${s[2]}" placeholder="%"><input type="text" data-k="note_${s[2]}"></div>`).join('');
+
+/* average of objective scores feeds the summary (still editable) */
+function recalc(id){
+  const v=[1,2,3].map(i=>document.querySelector(`[data-k="${id}_p${i}"]`).value).filter(x=>x!=='').map(Number);
+  document.querySelector(`[data-k="avg_${id}"]`).value=v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):'';
+}
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.area){ if(t.value>100)t.value=100; if(t.value<0)t.value=0; recalc(t.dataset.area); }
+  autosave();
+});
+document.addEventListener('change',autosave);
+
+function collect(){const d={};document.querySelectorAll('[data-k]').forEach(el=>d[el.dataset.k]=el.type==='checkbox'?el.checked:el.value);return d;}
+function fill(d){document.querySelectorAll('[data-k]').forEach(el=>{const v=d[el.dataset.k];if(v===undefined)return;if(el.type==='checkbox')el.checked=!!v;else el.value=v;});}
+function autosave(){try{localStorage.setItem('idp_data',JSON.stringify(collect()));}catch(e){}}
+try{const s=localStorage.getItem('idp_data');if(s)fill(JSON.parse(s));}catch(e){}
+
+function fname(ext){const p=(document.querySelector('[data-k="player"]').value||'Player').trim().replace(/[^\w\-]+/g,'_');return `IDP_${p}.${ext}`;}
+function save(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);}
+
+async function exportPDF(){
+  const {jsPDF}=window.jspdf; const pdf=new jsPDF({unit:'pt',format:'a4'});
+  document.body.classList.add('capturing');
+  try{
+    const pages=document.querySelectorAll('.page');
+    for(let i=0;i<pages.length;i++){
+      const c=await html2canvas(pages[i],{scale:2,backgroundColor:'#fff',useCORS:true});
+      let w=595.28,h=w*c.height/c.width; if(h>841.89){h=841.89;w=h*c.width/c.height;}
+      if(i)pdf.addPage();
+      pdf.addImage(c.toDataURL('image/jpeg',0.93),'JPEG',0,0,w,h);
+    }
+    const b64=btoa(unescape(encodeURIComponent(JSON.stringify(collect()))));
+    pdf.setProperties({title:'Individual Development Plan',subject:'IDPDATA:'+b64});
+    save(pdf.output('blob'),fname('pdf'));
+  }catch(e){alert('PDF export failed: '+e.message);}
+  document.body.classList.remove('capturing');
+}
+function exportJSON(){save(new Blob([JSON.stringify(collect(),null,1)],{type:'application/json'}),fname('json'));}
+
+async function importFile(f){
+  if(!f)return;
+  try{
+    let d;
+    if(f.name.toLowerCase().endsWith('.json')) d=JSON.parse(await f.text());
+    else{
+      const txt=new TextDecoder('latin1').decode(await f.arrayBuffer());
+      const m=txt.match(/IDPDATA:([A-Za-z0-9+\/=]+)/);
+      if(!m)throw new Error('This PDF has no form data. Only PDFs exported from this form can be imported.');
+      d=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    }
+    fill(d); autosave(); alert('Imported.');
+  }catch(e){alert('Import failed: '+e.message);}
+}
+function clearAll(){if(!confirm('Clear all fields?'))return;document.querySelectorAll('[data-k]').forEach(el=>{if(el.type==='checkbox')el.checked=false;else el.value='';});autosave();}
+/* === END: IDP SCRIPT === */
+</script>
+</body>
+</html>
